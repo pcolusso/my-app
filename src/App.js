@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import EXIF from 'exif-js'
 import './App.css';
 
-var imgs = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg"]
+var imgs = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"]
 
 class PhotoForm extends Component {
   constructor(props) {
