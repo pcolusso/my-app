@@ -4,6 +4,26 @@ import './App.css';
 
 var imgs = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"]
 
+var gcd = function(a, b) {
+  if (b < 0.0000001) {
+    return a
+  } else {
+    return gcd(b, Math.floor(a % b))
+  }
+}
+
+var toFraction = function(decimal) {
+  var len = decimal.toString().length - 2
+  var denominator = 10 ** len
+  var numerator = decimal * denominator
+  var divisor = gcd(numerator, denominator)
+
+  numerator /= divisor
+  denominator /= divisor
+
+  return Math.floor(numerator) + '/' + Math.floor(denominator)
+}
+
 class PhotoForm extends Component {
   constructor(props) {
     super(props)
@@ -81,7 +101,7 @@ class Photo extends Component {
       var aperture = EXIF.getTag(this, 'FNumber')
       var shutterSpeed = EXIF.getTag(this, 'ExposureTime')
       var sens = EXIF.getTag(this, 'ISOSpeedRatings')
-      var state = {aperture: aperture.toString(), shutterSpeed: shutterSpeed.toString(), iso: sens.toString()}
+      var state = {aperture: aperture, shutterSpeed: shutterSpeed, iso: sens}
 
       self.setState(state)
     })
@@ -100,9 +120,8 @@ class Photo extends Component {
   render() {
     return (
       <div>
-        <img onLoad={this.handleOnLoad} ref={this.imgRef} src={this.props.imageUrl} style={{width: 400}} />
-        <span ref={this.descRef} className="text-muted"><i>f</i>{this.state.aperture.toString()}, {this.state.shutterSpeed}s, {this.state.iso}iso</span>
-        <button onClick={this.togglePopup.bind(this)}>show larger</button>
+        <img onClick={this.togglePopup.bind(this)} onLoad={this.handleOnLoad} ref={this.imgRef} src={this.props.imageUrl} style={{width: 400}} />
+        <span ref={this.descRef} className="text-muted"><i>ƒ/</i>{this.state.aperture.toString()}, {toFraction(this.state.shutterSpeed)}s, {this.state.iso.toString()}iso</span>
         {this.state.showPopup ?
           <PhotoPopup closePopup={this.togglePopup} imageUrl={this.props.imageUrl} />
           : null
