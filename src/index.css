@@ -8,6 +8,43 @@ body {
   color: #111111;
 }
 
+.preview-enter {
+  transform: translateY(-100%);
+}
+
+.preview-enter.preview-enter-active {
+  transform: translateY(0%);
+  transition: transform 500ms ease-in;
+}
+/*
+.preview-leave {
+  transform: translate(100%);
+}
+
+.preview-leave.preview-leave-active {
+  //transform: translate(100%);
+  transition: transform 500ms ease-in-out;
+}*/
+
+.popup-enter {
+  opacity: 0.01
+}
+
+.popup-enter.popup-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.popup-leave {
+  opacity: 1;
+}
+
+.popup-leave.popup-leave-active {
+  opacity: 0.01;
+  transform: opacity 300ms ease-in;
+
+}
+
 .popup {
   position: fixed;
   width: 100%;

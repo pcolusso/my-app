@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import { CSSTransitionGroup } from 'react-transition-group'
 import EXIF from 'exif-js'
 import './App.css';
 
 var imgs = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"]
 
 var gcd = function(a, b) {
-  if (b < 0.0000001) {
-    return a
-  } else {
-    return gcd(b, Math.floor(a % b))
-  }
+    if (b) {
+        return gcd(b, a % b);
+    } else {
+        return Math.abs(a);
+    }
 }
 
 var toFraction = function(decimal) {
@@ -53,10 +54,12 @@ class PhotoForm extends Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        {this.state.files ? this.state.files.map((item, index) =>
-            <Photo imageUrl={URL.createObjectURL(item)} key={index} />)
-            : null
-        }
+        <CSSTransitionGroup transitionName="preview" transitionEnterTimeout={7000} transitionLeaveTimeout={7000}>
+          {this.state.files ? this.state.files.map((item, index) =>
+              <Photo className='' imageUrl={URL.createObjectURL(item)} key={index} />)
+              : null
+          }
+        </CSSTransitionGroup>
         </div>
       )
   }
@@ -65,12 +68,14 @@ class PhotoForm extends Component {
 class PhotoPopup extends Component {
   render() {
     return (
-      <div className="popup">
-        <div className="popup-inner">
-          <img src={this.props.imageUrl} style={{width: '100%'}} />
-          <button onClick={this.props.closePopup}>close</button>
+      <CSSTransitionGroup transitionName="popup">
+        <div className="popup">
+          <div className="popup-inner">
+            <img src={this.props.imageUrl} style={{width: '100%'}} />
+            <button onClick={this.props.closePopup}>close</button>
+          </div>
         </div>
-      </div>
+      </CSSTransitionGroup>
       )
   }
 }
